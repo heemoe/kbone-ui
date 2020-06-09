@@ -1,50 +1,45 @@
 <template>
-  <wx-swiper 
+  <wx-swiper
     v-if="ismp"
-        :autoplay="autoplay"
-        :current="current"
-        :interval="interval"
-        :duration="duration"
-        :circular="circular"
-        :vertical="vertical"
-        :indicator-dots="indicatorDots"
-        :indicator-color="indicatorColor"
-        :indicator-active-color="indicatorActiveColor"
-        :previous-margin="previousMargin"
-        :next-margin="nextMargin"
-        :easing-function="easingFunction"
-        :display-multiple-items="displayMultipleItems"
-        :skip-hidden-item-layout="skipHiddenItemLayout"
-        @change="itemChange"
-        @transition="transitionChange"
-        @animationfinish="animationfinish"
-    >
-      <slot></slot>
+    :autoplay="autoplay"
+    :current="current"
+    :interval="interval"
+    :duration="duration"
+    :circular="circular"
+    :vertical="vertical"
+    :indicator-dots="indicatorDots"
+    :indicator-color="indicatorColor"
+    :indicator-active-color="indicatorActiveColor"
+    :previous-margin="previousMargin"
+    :next-margin="nextMargin"
+    :easing-function="easingFunction"
+    :display-multiple-items="displayMultipleItems"
+    :skip-hidden-item-layout="skipHiddenItemLayout"
+    @change="itemChange"
+    @transition="transitionChange"
+    @animationfinish="animationfinish"
+  >
+    <slot></slot>
   </wx-swiper>
-  <KView
-    v-else
-    ref="slidesWrapper"
-    class="weui-swiper weui-swiper-wrapper">
-    <KView
-      ref="slides"
-      class="weui-swiper-slides">
-      <KView
-        id="slideFrame"
-        ref="slideFrame"
-        class="weui-swiper-slide-frame">
-        <slot/>
+  <KView v-else ref="slidesWrapper" class="weui-swiper weui-swiper-wrapper">
+    <KView ref="slides" class="weui-swiper-slides">
+      <KView id="slideFrame" ref="slideFrame" class="weui-swiper-slide-frame">
+        <slot />
       </KView>
     </KView>
     <KView
       v-if="indicatorDots"
       ref="slidesDots"
-      class="weui-swiper-dots weui-swiper-dots-horizontal">
-        <KView v-for="(item,index) in subItems" 
+      class="weui-swiper-dots weui-swiper-dots-horizontal"
+    >
+      <KView
+        v-for="(item,index) in subItems"
         class="weui-swiper-dot"
         :class="{
             'weui-swiper-dot-active': currentOrder === index
         }"
-        :key="index" />
+        :key="index"
+      />
     </KView>
   </KView>
 </template>
@@ -260,7 +255,7 @@ export default {
                 )
             }
             // 禁掉外部 webview 的滚动
-            event.preventDefault()
+            // event.preventDefault()
             return false
         },
         handleEnd(event) {
