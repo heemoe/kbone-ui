@@ -19,7 +19,7 @@
     @transition="transitionChange"
     @animationfinish="animationfinish"
   >
-    <slot></slot>
+    <slot />
   </wx-swiper>
   <KView v-else ref="slidesWrapper" class="weui-swiper weui-swiper-wrapper">
     <KView ref="slides" class="weui-swiper-slides">
@@ -34,11 +34,11 @@
     >
       <KView
         v-for="(item,index) in subItems"
-        class="weui-swiper-dot"
         :class="{
-            'weui-swiper-dot-active': currentOrder === index
+          'weui-swiper-dot-active': currentOrder === index
         }"
         :key="index"
+        class="weui-swiper-dot"
       />
     </KView>
   </KView>
@@ -148,30 +148,30 @@ export default {
             subItems: 0,
         }
     },
-    watch:{
-        circular(){
-            if(ismp) return
+    computed: {
+        itemsLength() {
+            this.subItems = this._getItems().length
+            return this.subItems
+        }
+    },
+    watch: {
+        circular() {
+            if (ismp) return
             this.circularEnabled = this.circular
             this._resetLayout()
         },
-        autoplay(){
-            if(this.autoplay){
+        autoplay() {
+            if (this.autoplay) {
                 this._scheduleAutoplay()
-            }else{
+            } else {
                 this._cancelSchedule()
             }
         },
-        currentOrder(newValue,oldValue){
-            if(newValue !== oldValue){
-                this.$emit('input',newValue)
-                this.$emit('change',newValue)
+        currentOrder(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.$emit('input', newValue)
+                this.$emit('change', newValue)
             }
-        }
-    },
-    computed:{
-        itemsLength(){
-            this.subItems = this._getItems().length
-            return this.subItems
         }
     },
     mounted() {
@@ -186,9 +186,9 @@ export default {
             this.subItems = this.itemsLength
         }
     },
-    beforeDestroy(){
-        if(!ismp) {
-            this.$refs.slidesWrapper.$el.removeEventListener('touchstart',this.handleStart, false) 
+    beforeDestroy() {
+        if (!ismp) {
+            this.$refs.slidesWrapper.$el.removeEventListener('touchstart', this.handleStart, false)
             this.$refs.slidesWrapper.$el.removeEventListener('touchmove', this.handleMove, false)
             this.$refs.slidesWrapper.$el.removeEventListener('touchend', this.handleEnd, false)
             this.$refs.slidesWrapper.$el.removeEventListener('mousedown', this.handleStart, false)
@@ -273,6 +273,9 @@ export default {
             if (Math.abs(this.contentTrackSpeed) > 0.2) {
                 extraMovement = 0.5 * direction
             }
+
+            this.$emit('swipe', extraMovement)
+
             const toPos = this._normalizeCurrentValue(this.viewportPosition + extraMovement)
             // if (isCancel) {
             // if (false) {
@@ -652,22 +655,22 @@ export default {
                 } else {
                     this.updateSwiper(position)
                 }
-                if(this.autoplay) this._scheduleAutoplay()
+                if (this.autoplay) this._scheduleAutoplay()
             }
 
             // 更新一下 dots 内容
             // this._updateDots(position)
         },
-        itemChange(event){
-            this.$emit('input',event.detail.current)
-            this.$emit('change',event)
-            this.$emit('bindchange',event)
+        itemChange(event) {
+            this.$emit('input', event.detail.current)
+            this.$emit('change', event)
+            this.$emit('bindchange', event)
         },
-        transitionChange(event){
-            this.$emit('transition',event)
+        transitionChange(event) {
+            this.$emit('transition', event)
         },
-        animationfinish(event){
-            this.$emit('animationfinish',event)
+        animationfinish(event) {
+            this.$emit('animationfinish', event)
         }
 
     },
